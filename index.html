@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <title>Document</title>
+</head>
+<body
+  class=""
+  style="max-width: 720px; margin: auto;"
+>
+  <div 
+  class="container-sm"
+  style="max-width: 720px; margin: auto;"
+  >
+    <h1>デジタル計算トレーニング</h1>
+    <main
+      class="p-1"
+    >
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a href="#question1" class="nav-link active" role="tab" data-bs-toggle="tab" aria-selected="true">
+            情報量計算
+          </a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a href="#question2" class="nav-link" role="tab" data-bs-toggle="tab" aria-selected="false">
+            進数変換
+          </a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a href="#question3" class="nav-link" role="tab" data-bs-toggle="tab" aria-selected="false">
+            ２進数の計算
+          </a>
+        </li>
+      </ul>
+
+      <div
+        class="tab-content"
+      >
+        <div
+          id="question1"
+          class="tab-pane active"
+          role="tabpanel" aria-labelledby="tab1"
+        >
+          <table class="table">
+            <tbody>
+              <tr>
+                <td class="d-flex justify-content-center align-items-center">
+                  <button class="btn btn-primary w-100" onclick="makeInfBitQuestion()">出題</button>
+                </td>
+                <td class="d-flex align-items-center">
+                  <span id="infbit-inf" class="w-25 d-flex justify-content-center"></span>通りで表せる情報のデータ量は「
+                  <div id="infbit-bit" name="ans" class="w-25 d-flex justify-content-center bg-dark">
+
+                  </div>
+                  bit」
+                </td>
+              </tr>
+
+              <tr>
+                <td class="d-flex justify-content-center align-items-center">
+                  <button class="btn btn-primary w-100" onclick="makeBitInfQuestion()">出題</button>
+                </td>
+                <td class="d-flex align-items-center">
+                  <span id="bitinf-bit" class="w-25 d-flex justify-content-center"></span>bitで表せる情報は「
+                  <div id="bitinf-inf" name="ans" class="w-25 d-flex justify-content-center bg-dark">
+
+                  </div>
+                  」通り
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          id="question2"
+          class="tab-pane p-2"
+          role="tabpanel" aria-labelledby="tab2"
+        >
+          <p>ここでは２進数は８桁に、１６新数は２桁に揃えて表示します。</p>
+          <table class="table">
+            <tbody>
+              <tr>
+                <td class="d-flex justify-content-center align-items-center">
+                  <button class="btn btn-primary w-100" onclick="makeDecToBinQuestion()">出題</button>
+                </td>
+                <td class="d-flex align-items-center">
+                  10新数の「<span id="decbin-dec" class="w-25 d-flex justify-content-center"></span>」を2進数に変換すると「
+                  <div id="decbin-bin" name="ans" class="w-25 d-flex justify-content-center bg-dark">
+  
+                  </div>
+                  」
+                </td>
+              </tr>
+
+              <tr>
+                <td class="d-flex justify-content-center align-items-center">
+                  <button class="btn btn-primary w-100" onclick="makeBinToDecQuestion()">出題</button>
+                </td>
+                <td class="d-flex align-items-center">
+                  2新数の「<span id="bindec-bin" class="w-25 d-flex justify-content-center"></span>」を10進数に変換すると「
+                  <div id="bindec-dec" name="ans" class="w-25 d-flex justify-content-center bg-dark">
+  
+                  </div>
+                  」
+                </td>
+              </tr>
+
+              <tr>
+                <td class="d-flex justify-content-center align-items-center">
+                  <button class="btn btn-primary w-100" onclick="makeBinToHexQuestion()">出題</button>
+                </td>
+                <td class="d-flex align-items-center">
+                  2新数の「<span id="binhex-bin" class="w-25 d-flex justify-content-center"></span>」を16進数に変換すると「
+                  <div id="binhex-hex" name="ans" class="w-25 d-flex justify-content-center bg-dark">
+  
+                  </div>
+                  」
+                </td>
+              </tr>
+
+              <tr>
+                <td class="d-flex justify-content-center align-items-center">
+                  <button class="btn btn-primary w-100" onclick="makeHexToBinQuestion()">出題</button>
+                </td>
+                <td class="d-flex align-items-center">
+                  16新数の「<span id="hexbin-hex" class="w-25 d-flex justify-content-center"></span>」を2進数に変換すると「
+                  <div id="hexbin-bin" name="ans" class="w-25 d-flex justify-content-center bg-dark">
+  
+                  </div>
+                  」
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          id="question3"
+          class="tab-pane d-flex justify-content-center align-items-center p-5"
+          role="tabpanel" aria-labelledby="tab3"
+        >
+        作成中
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="./js/conversion.js"></script>
+  <script src="./js/amount.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>
