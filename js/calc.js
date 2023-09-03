@@ -1,48 +1,27 @@
-function Rand(min, max) {
-  return Math.floor( Math.random() * (max + 1 - min) ) + min ;
+function makeAddQuestion() {
+  const come = document.getElementById("add-q");
+  const to = document.getElementById("add-a");
+
+  const num1 = Rand(0, 15);
+  const num2 = Rand(0, 15);
+  const addNum = num1 + num2;
+
+  come.innerText = `${decToBin(num1).padStart(4, "0")} + ${decToBin(num2).padStart(4, "0")} =`;
+  to.innerText   = `${decToBin(addNum).padStart(4, "0")}`;
 }
 
-function decToBin(dec) {
-  return dec.toString(2);
-}
+function makeDivQuestion() {
+  const come = document.getElementById("div-q");
+  const to = document.getElementById("div-a");
 
-function decToHex(dec) {
-  return dec.toString(16);
-}
+  const temp1 = Rand(0, 15);
+  const temp2 = Rand(0, 15);
 
-function binToDec(bin) {
-  return parseInt(bin, 2);
-}
+  const num1 = temp1 > temp2 ? temp1 : temp2;
+  const num2 = temp1 > temp2 ? temp2 : temp1;
 
-function hecToDec(hex) {
-  return parseInt(hex, 16);
-}
+  const divNum = num1 - num2;
 
-function makeDecToBinQuestion() {
-  const come = document.getElementById("decbin-dec");
-  const to = document.getElementById("decbin-bin");
-  const rn = Rand(0, 255);
-  come.innerHTML = rn;
-  to.innerHTML = decToBin(rn).padStart(8, "0");
-}
-function makeBinToDecQuestion() {
-  const come = document.getElementById("bindec-bin");
-  const to = document.getElementById("bindec-dec");
-  const rn = Rand(0, 255);
-  come.innerHTML = decToBin(rn).padStart(8, "0");
-  to.innerHTML = rn; 
-}
-function makeBinToHexQuestion() {
-  const come = document.getElementById("binhex-bin");
-  const to = document.getElementById("binhex-hex");
-  const rn = Rand(0, 255);
-  come.innerHTML = decToBin(rn).padStart(8, "0");
-  to.innerHTML =  decToHex(rn).toUpperCase().padStart(2, "0");
-}
-function makeHexToBinQuestion() {
-  const come = document.getElementById("hexbin-hex");
-  const to = document.getElementById("hexbin-bin");
-  const rn = Rand(0, 255);
-  come.innerHTML = decToHex(rn).toUpperCase().padStart(2, "0");
-  to.innerHTML = decToBin(rn).padStart(8, "0"); 
+  come.innerText = `${decToBin(num1).padStart(4, "0")} - ${decToBin(num2).padStart(4, "0")} =`;
+  to.innerText   = `${decToBin(divNum).padStart(4, "0")}`;
 }

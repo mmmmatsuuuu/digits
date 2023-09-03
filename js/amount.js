@@ -1,20 +1,3 @@
-function Rand(min, max) {
-  return Math.floor( Math.random() * (max + 1 - min) ) + min ;
-}
-
-function getBit(num) {
-  let itr = 0;
-  while (num > 0) {
-    num = Math.floor(num / 2);
-    itr++;
-  }
-  return itr;
-}
-
-function getAmount(bit) {
-  return 2 ** bit;
-}
-
 function makeInfBitQuestion() {
   const come = document.getElementById("infbit-inf");
   const to = document.getElementById("infbit-bit");
