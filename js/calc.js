@@ -3,7 +3,8 @@ import * as q from './questions.js';
 
 const questionGenerators = [
     q.makeAddQuestion,
-    q.makeSubQuestion
+    q.makeSubQuestion,
+    q.makeShiftQuestion
 ];
 
-initializePage("2進数の計算", questionGenerators);
+initializePage("calc", "2進数の計算", questionGenerators);

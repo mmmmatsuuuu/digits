@@ -8,4 +8,4 @@ const questionGenerators = [
     q.makeHexToBinQuestion
 ];
 
-initializePage("進数変換", questionGenerators);
+initializePage("conversion", "進数変換", questionGenerators);

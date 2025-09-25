@@ -23,6 +23,28 @@
     h1 {
         color: var(--bs-dark);
     }
+    .score-summary {
+        font-size: 0.9em;
+        margin-top: 5px;
+        padding-top: 5px;
+        border-top: 1px solid #eee;
+    }
+    .score-difficulty {
+        display: block;
+        margin-bottom: 2px;
+    }
+    .score-correct {
+        color: var(--bs-success);
+        font-weight: bold;
+    }
+    .score-incorrect {
+        color: var(--bs-danger);
+        font-weight: bold;
+    }
+    .score-total {
+        font-weight: bold;
+        color: var(--bs-primary);
+    }
   </style>
 </head>
 <body style="max-width: 720px; margin: auto;">
@@ -31,23 +53,68 @@
     <p class="text-center">学習したい項目を選んでください。</p>
     <div class="list-group shadow-sm">
       <a href="./pages/amount.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        情報量計算
+        <div>
+          情報量計算
+          <div class="score-summary d-flex gap-5">
+            <div id="score-amount-total" class="score-total"></div>
+            <div id="score-amount-1" class="score-difficulty"></div>
+            <div id="score-amount-2" class="score-difficulty"></div>
+            <div id="score-amount-3" class="score-difficulty"></div>
+          </div>
+        </div>
         <span class="badge bg-primary rounded-pill">&#x1F4BE;</span>
       </a>
       <a href="./pages/conversion.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        進数変換
+        <div>
+          進数変換
+          <div class="score-summary d-flex gap-5">
+            <div id="score-conversion-total" class="score-total"></div>
+            <div id="score-conversion-1" class="score-difficulty"></div>
+            <div id="score-conversion-2" class="score-difficulty"></div>
+            <div id="score-conversion-3" class="score-difficulty"></div>
+          </div>
+        </div>
         <span class="badge bg-primary rounded-pill">&#x1F504;</span>
       </a>
       <a href="./pages/calc.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        2進数の計算
+        <div>
+          2進数の計算
+          <div class="score-summary d-flex gap-5">
+            <div id="score-calc-total" class="score-total"></div>
+            <div id="score-calc-1" class="score-difficulty"></div>
+            <div id="score-calc-2" class="score-difficulty"></div>
+            <div id="score-calc-3" class="score-difficulty"></div>
+          </div>
+        </div>
         <span class="badge bg-primary rounded-pill">&#x2795;</span>
       </a>
-      <a href="./pages/img_amount.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        データ量の計算（画像）
+      <a href="./pages/data_amount.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <div>
+          データ量の計算
+          <div class="score-summary d-flex gap-5">
+            <div id="score-data_amount-total" class="score-total"></div>
+            <div id="score-data_amount-1" class="score-difficulty"></div>
+            <div id="score-data_amount-2" class="score-difficulty"></div>
+            <div id="score-data_amount-3" class="score-difficulty"></div>
+          </div>
+        </div>
         <span class="badge bg-primary rounded-pill">&#x1F5BC;️</span>
+      </a>
+      <a href="./pages/compression.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <div>
+          圧縮の計算
+          <div class="score-summary d-flex gap-5">
+            <div id="score-compression-total" class="score-total"></div>
+            <div id="score-compression-1" class="score-difficulty"></div>
+            <div id="score-compression-2" class="score-difficulty"></div>
+            <div id="score-compression-3" class="score-difficulty"></div>
+          </div>
+        </div>
+        <span class="badge bg-primary rounded-pill">&#x1F4A0;</span>
       </a>
     </div>
   </div>
+  <script src="./js/index.js" type="module"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </body>
 </html>

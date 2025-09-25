@@ -6,4 +6,4 @@ const questionGenerators = [
     q.makeBitInfQuestion
 ];
 
-initializePage("情報量計算", questionGenerators);
+initializePage("amount", "情報量計算", questionGenerators);
