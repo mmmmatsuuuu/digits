@@ -2,8 +2,7 @@ import { initializePage } from './common.js';
 import * as q from './questions.js';
 
 const questionGenerators = [
-    q.makeAddQuestion,
-    q.makeSubQuestion
+    q.makeImgAmountQuestion
 ];
 
-initializePage("2進数の計算", questionGenerators);
+initializePage("データ量の計算（画像）", questionGenerators);
