@@ -4,212 +4,117 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-  <title>デジタル計算トレーニング</title>
+  <title>デジタル計算トレーニング - トップ</title>
+  <style>
+    :root {
+      --bs-primary: #0d6efd;
+      --bs-secondary: #6c757d;
+      --bs-success: #198754;
+      --bs-danger: #dc3545;
+      --bs-light: #f8f9fa;
+      --bs-dark: #212529;
+    }
+    body {
+      background-color: #f0f2f5;
+    }
+    .list-group-item-action:hover {
+      background-color: #e9ecef;
+    }
+    h1 {
+        color: var(--bs-dark);
+    }
+    .score-summary {
+        font-size: 0.9em;
+        margin-top: 5px;
+        padding-top: 5px;
+        border-top: 1px solid #eee;
+    }
+    .score-difficulty {
+        display: block;
+        margin-bottom: 2px;
+    }
+    .score-correct {
+        color: var(--bs-success);
+        font-weight: bold;
+    }
+    .score-incorrect {
+        color: var(--bs-danger);
+        font-weight: bold;
+    }
+    .score-total {
+        font-weight: bold;
+        color: var(--bs-primary);
+    }
+  </style>
 </head>
-<body
-  class=""
-  style="max-width: 720px; margin: auto;"
->
-  <div 
-  class="container-sm"
-  style="max-width: 720px; margin: auto;"
-  >
-    <h1>デジタル計算トレーニング</h1>
-    <main
-      class="p-1"
-    >
-      <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item" role="presentation">
-          <a href="#question1" class="nav-link active" role="tab" data-bs-toggle="tab" aria-selected="true">
-            情報量計算
-          </a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a href="#question2" class="nav-link" role="tab" data-bs-toggle="tab" aria-selected="false">
-            進数変換
-          </a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a href="#question3" class="nav-link" role="tab" data-bs-toggle="tab" aria-selected="false">
-            ２進数の計算
-          </a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a href="#question4" class="nav-link" role="tab" data-bs-toggle="tab" aria-selected="false">
-            データ量の計算（画像）
-          </a>
-        </li>
-      </ul>
-
-      <div
-        class="tab-content"
-      >
-        <div
-          id="question1"
-          class="tab-pane active"
-          role="tabpanel" aria-labelledby="tab1"
-        >
-          <table class="table">
-            <tbody>
-              <tr>
-                <td class="d-flex justify-content-center align-items-center">
-                  <button class="btn btn-primary w-100" onclick="makeInfBitQuestion()">出題</button>
-                </td>
-                <td class="d-flex align-items-center">
-                  <span id="infbit-inf" class="w-25 d-flex justify-content-center"></span>通りで表せる情報のデータ量は「
-                  <div id="infbit-bit" name="ans" class="w-25 d-flex justify-content-center bg-dark">
-
-                  </div>
-                  bit」
-                </td>
-              </tr>
-
-              <tr>
-                <td class="d-flex justify-content-center align-items-center">
-                  <button class="btn btn-primary w-100" onclick="makeBitInfQuestion()">出題</button>
-                </td>
-                <td class="d-flex align-items-center">
-                  <span id="bitinf-bit" class="w-25 d-flex justify-content-center"></span>bitで表せる情報は「
-                  <div id="bitinf-inf" name="ans" class="w-25 d-flex justify-content-center bg-dark">
-
-                  </div>
-                  」通り
-                </td>
-              </tr>
-            </tbody>
-          </table>
+<body style="max-width: 720px; margin: auto;">
+  <div class="container-sm p-4">
+    <h1 class="mb-4 text-center">&#x1F4BB; デジタル計算トレーニング &#x1F4BB;</h1>
+    <p class="text-center">学習したい項目を選んでください。</p>
+    <div class="list-group shadow-sm">
+      <a href="./pages/amount.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <div>
+          情報量計算
+          <div class="score-summary d-flex gap-5">
+            <div id="score-amount-total" class="score-total"></div>
+            <div id="score-amount-1" class="score-difficulty"></div>
+            <div id="score-amount-2" class="score-difficulty"></div>
+            <div id="score-amount-3" class="score-difficulty"></div>
+          </div>
         </div>
-        <div
-          id="question2"
-          class="tab-pane p-2"
-          role="tabpanel" aria-labelledby="tab2"
-        >
-          <p>ここでは２進数は８桁に、１６進数は２桁に揃えて表示します。</p>
-          <table class="table">
-            <tbody>
-              <tr>
-                <td class="d-flex justify-content-center align-items-center">
-                  <button class="btn btn-primary w-100" onclick="makeDecToBinQuestion()">出題</button>
-                </td>
-                <td class="d-flex align-items-center">
-                  10進数の「<span id="decbin-dec" class="w-25 d-flex justify-content-center"></span>」を2進数に変換すると「
-                  <div id="decbin-bin" name="ans" class="w-25 d-flex justify-content-center bg-dark">
-  
-                  </div>
-                  」
-                </td>
-              </tr>
-
-              <tr>
-                <td class="d-flex justify-content-center align-items-center">
-                  <button class="btn btn-primary w-100" onclick="makeBinToDecQuestion()">出題</button>
-                </td>
-                <td class="d-flex align-items-center">
-                  2進数の「<span id="bindec-bin" class="w-25 d-flex justify-content-center"></span>」を10進数に変換すると「
-                  <div id="bindec-dec" name="ans" class="w-25 d-flex justify-content-center bg-dark">
-  
-                  </div>
-                  」
-                </td>
-              </tr>
-
-              <tr>
-                <td class="d-flex justify-content-center align-items-center">
-                  <button class="btn btn-primary w-100" onclick="makeBinToHexQuestion()">出題</button>
-                </td>
-                <td class="d-flex align-items-center">
-                  2進数の「<span id="binhex-bin" class="w-25 d-flex justify-content-center"></span>」を16進数に変換すると「
-                  <div id="binhex-hex" name="ans" class="w-25 d-flex justify-content-center bg-dark">
-  
-                  </div>
-                  」
-                </td>
-              </tr>
-
-              <tr>
-                <td class="d-flex justify-content-center align-items-center">
-                  <button class="btn btn-primary w-100" onclick="makeHexToBinQuestion()">出題</button>
-                </td>
-                <td class="d-flex align-items-center">
-                  16進数の「<span id="hexbin-hex" class="w-25 d-flex justify-content-center"></span>」を2進数に変換すると「
-                  <div id="hexbin-bin" name="ans" class="w-25 d-flex justify-content-center bg-dark">
-  
-                  </div>
-                  」
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <span class="badge bg-primary rounded-pill">&#x1F4BE;</span>
+      </a>
+      <a href="./pages/conversion.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <div>
+          進数変換
+          <div class="score-summary d-flex gap-5">
+            <div id="score-conversion-total" class="score-total"></div>
+            <div id="score-conversion-1" class="score-difficulty"></div>
+            <div id="score-conversion-2" class="score-difficulty"></div>
+            <div id="score-conversion-3" class="score-difficulty"></div>
+          </div>
         </div>
-        <div
-          id="question3"
-          class="tab-pane"
-          role="tabpanel" aria-labelledby="tab3"
-        >
-          <table class="table">
-            <tbody>
-              <tr>
-                <td class="d-flex justify-content-center align-items-center">
-                  <button class="btn btn-primary w-100" onclick="makeAddQuestion()">出題</button>
-                </td>
-                <td class="d-flex align-items-center">
-                  足し算: <span id="add-q" class="w-25 d-flex justify-content-center"></span>
-                  <span id="add-a" name="ans" class="w-25 d-flex justify-content-center bg-dark"></span>
-                </td>
-              </tr>
-
-              <tr>
-                <td class="d-flex justify-content-center align-items-center">
-                  <button class="btn btn-primary w-100" onclick="makeDivQuestion()">出題</button>
-                </td>
-                <td class="d-flex align-items-center">
-                  引き算: <span id="div-q" class="w-25 d-flex justify-content-center"></span>
-                  <span id="div-a" name="ans" class="w-25 d-flex justify-content-center bg-dark"></span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <span class="badge bg-primary rounded-pill">&#x1F504;</span>
+      </a>
+      <a href="./pages/calc.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <div>
+          2進数の計算
+          <div class="score-summary d-flex gap-5">
+            <div id="score-calc-total" class="score-total"></div>
+            <div id="score-calc-1" class="score-difficulty"></div>
+            <div id="score-calc-2" class="score-difficulty"></div>
+            <div id="score-calc-3" class="score-difficulty"></div>
+          </div>
         </div>
-
-        <div
-          id="question4"
-          class="tab-pane"
-          role="tabpanel" aria-labelledby="tab4"
-        >
-          <table class="table">
-            <tbody>
-              <tr>
-                <td class="d-flex justify-content-center align-items-center">
-                  <button class="btn btn-primary w-100" onclick="makeImgAmountQuestion()">出題</button>
-                </td>
-                <td class="d-flex flex-column">
-                  問題
-                  <div
-                    id="ia-q"
-                  >
-
-                  </div>
-                  解答
-                  <div
-                    id="ia-a"
-                    name="ans"
-                    class="bg-dark"
-                  >
-
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <span class="badge bg-primary rounded-pill">&#x2795;</span>
+      </a>
+      <a href="./pages/data_amount.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <div>
+          データ量の計算
+          <div class="score-summary d-flex gap-5">
+            <div id="score-data_amount-total" class="score-total"></div>
+            <div id="score-data_amount-1" class="score-difficulty"></div>
+            <div id="score-data_amount-2" class="score-difficulty"></div>
+            <div id="score-data_amount-3" class="score-difficulty"></div>
+          </div>
         </div>
-      </div>
-    </main>
+        <span class="badge bg-primary rounded-pill">&#x1F5BC;️</span>
+      </a>
+      <a href="./pages/compression.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <div>
+          圧縮の計算
+          <div class="score-summary d-flex gap-5">
+            <div id="score-compression-total" class="score-total"></div>
+            <div id="score-compression-1" class="score-difficulty"></div>
+            <div id="score-compression-2" class="score-difficulty"></div>
+            <div id="score-compression-3" class="score-difficulty"></div>
+          </div>
+        </div>
+        <span class="badge bg-primary rounded-pill">&#x1F4A0;</span>
+      </a>
+    </div>
   </div>
-  <script src="./js/common.js"></script>
-  <script src="./js/conversion.js"></script>
-  <script src="./js/amount.js"></script>
-  <script src="./js/calc.js"></script>
-  <script src="./js/calcImgAmout.js"></script>
+  <script src="./js/index.js" type="module"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </body>
 </html>
