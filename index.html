@@ -1,120 +1,17 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" class="">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-  <title>デジタル計算トレーニング - トップ</title>
-  <style>
-    :root {
-      --bs-primary: #0d6efd;
-      --bs-secondary: #6c757d;
-      --bs-success: #198754;
-      --bs-danger: #dc3545;
-      --bs-light: #f8f9fa;
-      --bs-dark: #212529;
-    }
-    body {
-      background-color: #f0f2f5;
-    }
-    .list-group-item-action:hover {
-      background-color: #e9ecef;
-    }
-    h1 {
-        color: var(--bs-dark);
-    }
-    .score-summary {
-        font-size: 0.9em;
-        margin-top: 5px;
-        padding-top: 5px;
-        border-top: 1px solid #eee;
-    }
-    .score-difficulty {
-        display: block;
-        margin-bottom: 2px;
-    }
-    .score-correct {
-        color: var(--bs-success);
-        font-weight: bold;
-    }
-    .score-incorrect {
-        color: var(--bs-danger);
-        font-weight: bold;
-    }
-    .score-total {
-        font-weight: bold;
-        color: var(--bs-primary);
-    }
-  </style>
+  <meta name="description" content="情報Iの進数変換・情報量・データ量計算を練習できるトレーニングサイト">
+  <meta name="theme-color" content="#4f46e5">
+  <title>デジタル計算トレーニング</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body style="max-width: 720px; margin: auto;">
-  <div class="container-sm p-4">
-    <h1 class="mb-4 text-center">&#x1F4BB; デジタル計算トレーニング &#x1F4BB;</h1>
-    <p class="text-center">学習したい項目を選んでください。</p>
-    <div class="list-group shadow-sm">
-      <a href="./pages/amount.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        <div>
-          情報量計算
-          <div class="score-summary d-flex gap-5">
-            <div id="score-amount-total" class="score-total"></div>
-            <div id="score-amount-1" class="score-difficulty"></div>
-            <div id="score-amount-2" class="score-difficulty"></div>
-            <div id="score-amount-3" class="score-difficulty"></div>
-          </div>
-        </div>
-        <span class="badge bg-primary rounded-pill">&#x1F4BE;</span>
-      </a>
-      <a href="./pages/conversion.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        <div>
-          進数変換
-          <div class="score-summary d-flex gap-5">
-            <div id="score-conversion-total" class="score-total"></div>
-            <div id="score-conversion-1" class="score-difficulty"></div>
-            <div id="score-conversion-2" class="score-difficulty"></div>
-            <div id="score-conversion-3" class="score-difficulty"></div>
-          </div>
-        </div>
-        <span class="badge bg-primary rounded-pill">&#x1F504;</span>
-      </a>
-      <a href="./pages/calc.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        <div>
-          2進数の計算
-          <div class="score-summary d-flex gap-5">
-            <div id="score-calc-total" class="score-total"></div>
-            <div id="score-calc-1" class="score-difficulty"></div>
-            <div id="score-calc-2" class="score-difficulty"></div>
-            <div id="score-calc-3" class="score-difficulty"></div>
-          </div>
-        </div>
-        <span class="badge bg-primary rounded-pill">&#x2795;</span>
-      </a>
-      <a href="./pages/data_amount.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        <div>
-          データ量の計算
-          <div class="score-summary d-flex gap-5">
-            <div id="score-data_amount-total" class="score-total"></div>
-            <div id="score-data_amount-1" class="score-difficulty"></div>
-            <div id="score-data_amount-2" class="score-difficulty"></div>
-            <div id="score-data_amount-3" class="score-difficulty"></div>
-          </div>
-        </div>
-        <span class="badge bg-primary rounded-pill">&#x1F5BC;️</span>
-      </a>
-      <a href="./pages/compression.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        <div>
-          圧縮の計算
-          <div class="score-summary d-flex gap-5">
-            <div id="score-compression-total" class="score-total"></div>
-            <div id="score-compression-1" class="score-difficulty"></div>
-            <div id="score-compression-2" class="score-difficulty"></div>
-            <div id="score-compression-3" class="score-difficulty"></div>
-          </div>
-        </div>
-        <span class="badge bg-primary rounded-pill">&#x1F4A0;</span>
-      </a>
-    </div>
-  </div>
-  <script src="./js/index.js" type="module"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<body class="bg-gray-50 dark:bg-gray-900">
+  <div id="app"></div>
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>
