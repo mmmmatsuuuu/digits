@@ -31,4 +31,17 @@
   ::-webkit-scrollbar-thumb {
     @apply bg-gray-300 dark:bg-gray-600 rounded-full;
   }
+
+  /* ============================================================
+   * カードの裏面パターン
+   * ============================================================ */
+  .card-back-pattern {
+    background: repeating-linear-gradient(
+      45deg,
+      #1E40AF,
+      #1E40AF 3px,
+      #2563EB 3px,
+      #2563EB 9px
+    );
+  }
 }

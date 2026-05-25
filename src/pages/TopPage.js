@@ -154,6 +154,36 @@ export function renderTopPage(appEl) {
 
       <!-- メインコンテンツ -->
       <main class="max-w-2xl mx-auto px-4 py-6">
+
+        <!-- デジタル体験バナー -->
+        <button
+          data-navigate="/binary"
+          class="w-full text-left mb-6 rounded-2xl overflow-hidden shadow-sm hover:shadow-md
+                 border border-amber-200 dark:border-amber-800
+                 bg-gradient-to-br from-amber-50 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/20
+                 transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+          aria-label="デジタルの仕組み体験ページへ"
+        >
+          <div class="p-5 flex items-center gap-4">
+            <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-amber-400/30 dark:bg-amber-500/20 flex items-center justify-center text-2xl">
+              🔢
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-0.5">
+                <h2 class="font-bold text-amber-800 dark:text-amber-200 text-base">デジタルの仕組み体験</h2>
+                <span class="text-xs bg-amber-400 dark:bg-amber-600 text-white font-bold px-2 py-0.5 rounded-full">NEW</span>
+              </div>
+              <p class="text-xs text-amber-700/70 dark:text-amber-300/70">
+                コインや電球で「0と1」を体感しよう！コンピューターの情報表現の基本をインタラクティブに学べます
+              </p>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                 stroke="currentColor" class="flex-shrink-0 w-4 h-4 text-amber-400 dark:text-amber-500">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+          </div>
+        </button>
+
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-5">学習したいカテゴリを選んでください</p>
         <div class="flex flex-col gap-3">
           ${CATEGORIES.map(renderCategoryCard).join('')}
