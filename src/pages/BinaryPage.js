@@ -47,82 +47,113 @@ const MODE_CONFIG = {
 };
 
 // ============================================================
+// 電球 SVG ヘルパー
+// ============================================================
+
+/**
+ * 電球形状の SVG を返す
+ * - isOn=true  : ガラス部分が明るい黄色、フィラメントが琥珀色（点灯）
+ * - isOn=false : ガラス部分が透明（輪郭のみ）、フィラメントがグレー（消灯）
+ * @param {boolean} isOn
+ * @param {number}  width  SVG の幅（高さは自動算出）
+ */
+function svgBulb(isOn, width = 22) {
+  const h      = Math.round(width * 1.18);
+  const stroke = isOn ? '#92400E' : '#9CA3AF';
+  const fill   = isOn ? '#FEF9C3' : 'none';
+  const showBase = width >= 15;
+  return `<svg width="${width}" height="${h}" viewBox="0 0 22 26" xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+    <path d="M11 1.5C6.3 1.5 2.5 5.3 2.5 10C2.5 13.2 4.3 15.9 6.8 17.4L6.8 20.5L15.2 20.5L15.2 17.4C17.7 15.9 19.5 13.2 19.5 10C19.5 5.3 15.7 1.5 11 1.5Z"
+          fill="${fill}" stroke="${stroke}" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M8.5 15 Q11 12.5 13.5 15" stroke="${stroke}" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    ${showBase ? `
+    <rect x="6.8" y="20.5" width="8.4" height="2"   rx="0.8" fill="${stroke}" opacity="0.8"/>
+    <rect x="7.8" y="22.5" width="6.4" height="1.8" rx="0.8" fill="${stroke}" opacity="0.6"/>
+    <rect x="8.8" y="24.3" width="4.4" height="1.5" rx="0.7" fill="${stroke}" opacity="0.4"/>
+    ` : ''}
+  </svg>`;
+}
+
+// ============================================================
 // ビットユニットビルダー（小・各セクション共通）
 // ============================================================
 
-function buildBitUnit(isOn, index, section, mode, disabled = false) {
+/**
+ * @param {boolean} isOn
+ * @param {number}  index
+ * @param {string}  section  '1' | '4' | '8' | 'c'
+ * @param {string}  mode     'lightbulb' | 'coin' | 'card'
+ * @param {boolean} disabled
+ * @param {string}  size     'sm'（通常）| 'xs'（8ビット1列用）
+ */
+function buildBitUnit(isOn, index, section, mode, disabled = false, size = 'sm') {
   const disabledClass = disabled ? 'opacity-60 pointer-events-none' : '';
+  const attrs  = `data-bit-section="${section}" data-bit-index="${index}" ${disabled ? 'disabled' : ''}`;
+  const textSz = size === 'xs' ? 'text-xs' : 'text-sm';
+  const btnCls = `flex flex-col items-center gap-1 group select-none ${disabledClass}`;
 
   switch (mode) {
-    case 'coin':
+    case 'coin': {
+      const cntSz = size === 'xs' ? 'w-8 h-8' : 'w-11 h-11';
+      const lblSz = size === 'xs' ? 'text-[10px]' : 'text-xs';
       return `
-        <button
-          data-bit-section="${section}" data-bit-index="${index}"
-          ${disabled ? 'disabled' : ''}
-          class="flex flex-col items-center gap-1.5 group select-none ${disabledClass}"
-          aria-label="${isOn ? '表（1）' : '裏（0）'}のコイン"
-        >
-          <div class="
-            w-11 h-11 rounded-full flex items-center justify-center border-2 transition-all duration-150
+        <button ${attrs} class="${btnCls}" aria-label="${isOn ? '表（1）' : '裏（0）'}のコイン">
+          <div class="${cntSz} rounded-full flex items-center justify-center border-2 transition-all duration-150
             ${isOn
               ? 'bg-gradient-to-br from-yellow-300 to-amber-500 border-amber-600 shadow-md shadow-amber-300/50 scale-110'
               : 'bg-gradient-to-br from-gray-300 to-slate-400 dark:from-gray-600 dark:to-slate-700 border-gray-400 dark:border-gray-600 group-hover:scale-105'}
           ">
-            <span class="text-xs font-bold leading-none ${isOn ? 'text-amber-900' : 'text-gray-600 dark:text-gray-300'}">
+            <span class="${lblSz} font-bold leading-none ${isOn ? 'text-amber-900' : 'text-gray-600 dark:text-gray-300'}">
               ${isOn ? '表' : '裏'}
             </span>
           </div>
-          <span class="text-sm font-bold font-mono leading-none
+          <span class="${textSz} font-bold font-mono leading-none
             ${isOn ? 'text-amber-600 dark:text-amber-400' : 'text-slate-500 dark:text-slate-400'}
           ">${isOn ? '1' : '0'}</span>
         </button>
       `;
+    }
 
-    case 'card':
+    case 'card': {
+      const szW   = size === 'xs' ? 'w-6' : 'w-9';
+      const szH   = size === 'xs' ? 'h-9' : 'h-12';
+      const icnSz = size === 'xs' ? 'text-sm' : 'text-lg';
       return `
-        <button
-          data-bit-section="${section}" data-bit-index="${index}"
-          ${disabled ? 'disabled' : ''}
-          class="flex flex-col items-center gap-1.5 group select-none ${disabledClass}"
-          aria-label="${isOn ? '表向き（1）' : '裏向き（0）'}のカード"
-        >
-          <div class="
-            w-9 h-12 rounded flex items-center justify-center transition-all duration-150
+        <button ${attrs} class="${btnCls}" aria-label="${isOn ? '表向き（1）' : '裏向き（0）'}のカード">
+          <div class="${szW} ${szH} rounded flex items-center justify-center transition-all duration-150
             ${isOn
               ? 'bg-white dark:bg-gray-100 shadow-md border border-gray-200 scale-105'
               : 'card-back-pattern shadow border border-blue-700 group-hover:scale-105'}
           ">
             ${isOn
-              ? '<span class="text-red-600 dark:text-red-500 text-lg leading-none">♠</span>'
-              : '<span class="text-white/70 text-xs font-bold">裏</span>'}
+              ? `<span class="text-red-600 dark:text-red-500 ${icnSz} leading-none">♠</span>`
+              : `<span class="text-white/70 text-[10px] font-bold">裏</span>`}
           </div>
-          <span class="text-sm font-bold font-mono leading-none
+          <span class="${textSz} font-bold font-mono leading-none
             ${isOn ? 'text-rose-600 dark:text-rose-400' : 'text-blue-500 dark:text-blue-400'}
           ">${isOn ? '1' : '0'}</span>
         </button>
       `;
+    }
 
-    default: // lightbulb
+    default: { // lightbulb
+      const cntSz = size === 'xs' ? 'w-8 h-8' : 'w-11 h-11';
+      const svgW  = size === 'xs' ? 17 : 22;
       return `
-        <button
-          data-bit-section="${section}" data-bit-index="${index}"
-          ${disabled ? 'disabled' : ''}
-          class="flex flex-col items-center gap-1.5 group select-none ${disabledClass}"
-          aria-label="${isOn ? '点灯中（1）' : '消灯中（0）'}の電球"
-        >
-          <div class="
-            w-11 h-11 rounded-full flex items-center justify-center text-xl transition-all duration-150
+        <button ${attrs} class="${btnCls}" aria-label="${isOn ? '点灯中（1）' : '消灯中（0）'}の電球">
+          <div class="${cntSz} rounded-full flex items-center justify-center transition-all duration-150
             ${isOn
               ? 'bg-yellow-300 dark:bg-yellow-400 shadow-md shadow-yellow-300/70 dark:shadow-yellow-400/50 scale-110'
-              : 'bg-gray-200 dark:bg-gray-700 opacity-60 group-hover:opacity-80 group-hover:scale-105'}
+              : 'bg-gray-100 dark:bg-gray-800 opacity-60 group-hover:opacity-80 group-hover:scale-105'}
           ">
-            ${isOn ? '💡' : '⚫'}
+            ${svgBulb(isOn, svgW)}
           </div>
-          <span class="text-sm font-bold font-mono leading-none
+          <span class="${textSz} font-bold font-mono leading-none
             ${isOn ? 'text-yellow-600 dark:text-yellow-400' : 'text-gray-400 dark:text-gray-500'}
           ">${isOn ? '1' : '0'}</span>
         </button>
       `;
+    }
   }
 }
 
@@ -134,13 +165,10 @@ function buildLargeBitUnit(isOn, index, section, mode) {
   switch (mode) {
     case 'coin':
       return `
-        <button
-          data-bit-section="${section}" data-bit-index="${index}"
+        <button data-bit-section="${section}" data-bit-index="${index}"
           class="flex flex-col items-center gap-2 group select-none"
-          aria-label="${isOn ? '表（1）' : '裏（0）'}、クリックで切り替え"
-        >
-          <div class="
-            w-20 h-20 rounded-full flex items-center justify-center border-4 transition-all duration-200
+          aria-label="${isOn ? '表（1）' : '裏（0）'}、クリックで切り替え">
+          <div class="w-20 h-20 rounded-full flex items-center justify-center border-4 transition-all duration-200
             ${isOn
               ? 'bg-gradient-to-br from-yellow-300 to-amber-500 border-amber-600 shadow-lg shadow-amber-300/60 scale-105'
               : 'bg-gradient-to-br from-gray-300 to-slate-400 dark:from-gray-600 dark:to-slate-700 border-gray-400 dark:border-gray-600 group-hover:scale-105'}
@@ -157,13 +185,10 @@ function buildLargeBitUnit(isOn, index, section, mode) {
 
     case 'card':
       return `
-        <button
-          data-bit-section="${section}" data-bit-index="${index}"
+        <button data-bit-section="${section}" data-bit-index="${index}"
           class="flex flex-col items-center gap-2 group select-none"
-          aria-label="${isOn ? '表向き（1）' : '裏向き（0）'}、クリックで切り替え"
-        >
-          <div class="
-            w-16 h-24 rounded-lg flex items-center justify-center transition-all duration-200
+          aria-label="${isOn ? '表向き（1）' : '裏向き（0）'}、クリックで切り替え">
+          <div class="w-16 h-24 rounded-lg flex items-center justify-center transition-all duration-200
             ${isOn
               ? 'bg-white dark:bg-gray-100 shadow-lg border-2 border-gray-200 scale-105'
               : 'card-back-pattern shadow-md border-2 border-blue-700 group-hover:scale-105'}
@@ -180,18 +205,15 @@ function buildLargeBitUnit(isOn, index, section, mode) {
 
     default: // lightbulb
       return `
-        <button
-          data-bit-section="${section}" data-bit-index="${index}"
+        <button data-bit-section="${section}" data-bit-index="${index}"
           class="flex flex-col items-center gap-2 group select-none"
-          aria-label="${isOn ? '点灯中（1）' : '消灯中（0）'}、クリックで切り替え"
-        >
-          <div class="
-            w-20 h-20 rounded-full flex items-center justify-center text-4xl transition-all duration-200
+          aria-label="${isOn ? '点灯中（1）' : '消灯中（0）'}、クリックで切り替え">
+          <div class="w-20 h-20 rounded-full flex items-center justify-center transition-all duration-200
             ${isOn
               ? 'bg-yellow-300 dark:bg-yellow-400 shadow-lg shadow-yellow-300/70 dark:shadow-yellow-400/50 scale-105'
-              : 'bg-gray-200 dark:bg-gray-700 opacity-60 group-hover:scale-105'}
+              : 'bg-gray-100 dark:bg-gray-800 opacity-60 group-hover:scale-105'}
           ">
-            ${isOn ? '💡' : '⚫'}
+            ${svgBulb(isOn, 36)}
           </div>
           <span class="text-xl font-bold font-mono ${isOn ? 'text-yellow-600 dark:text-yellow-400' : 'text-gray-400 dark:text-gray-500'}">
             ${isOn ? '1' : '0'}
@@ -211,16 +233,13 @@ function buildModeSwitcher(currentMode) {
       ${Object.entries(MODE_CONFIG).map(([key, cfg]) => {
         const isActive = key === currentMode;
         return `
-          <button
-            data-set-mode="${key}"
+          <button data-set-mode="${key}"
             class="flex-1 flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-sm font-medium transition-all duration-150
               ${isActive
                 ? 'bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 shadow-sm'
                 : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-white/50 dark:hover:bg-gray-700/50'}
-            "
-          >
-            <span>${cfg.emoji}</span>
-            <span>${cfg.name}</span>
+            ">
+            <span>${cfg.emoji}</span><span>${cfg.name}</span>
           </button>
         `;
       }).join('')}
@@ -235,7 +254,6 @@ function buildModeSwitcher(currentMode) {
 function buildSection1(bits, mode) {
   const cfg  = MODE_CONFIG[mode];
   const isOn = bits[0] === 1;
-
   return `
     <section class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
       <div class="flex items-center gap-2 mb-1">
@@ -279,7 +297,6 @@ function buildSection4(bits, mode) {
   const cfg     = MODE_CONFIG[mode];
   const decimal = bitsToDecimal(bits);
   const binary  = bits.join('');
-
   return `
     <section class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
       <div class="flex items-center gap-2 mb-1">
@@ -315,7 +332,7 @@ function buildSection4(bits, mode) {
 }
 
 // ============================================================
-// セクション③：8ビット（1バイト）
+// セクション③：8ビット（1バイト）― 1列表示
 // ============================================================
 
 function buildSection8(bits, mode) {
@@ -335,11 +352,17 @@ function buildSection8(bits, mode) {
         <strong class="text-gray-700 dark:text-gray-300">アルファベットや記号</strong>を表せます！
       </p>
 
-      <div class="flex justify-center gap-2 mb-2">
-        ${bits.slice(0, 4).map((b, i) => buildBitUnit(b === 1, i, '8', mode)).join('')}
-      </div>
-      <div class="flex justify-center gap-2 mb-5">
-        ${bits.slice(4).map((b, i) => buildBitUnit(b === 1, i + 4, '8', mode)).join('')}
+      <!-- 8ビット 1列（前半4・後半4 をセパレーターで区切り）-->
+      <div class="flex items-start justify-center gap-1 mb-5 overflow-x-auto pb-1">
+        <div class="flex gap-1.5">
+          ${bits.slice(0, 4).map((b, i) => buildBitUnit(b === 1, i, '8', mode, false, 'xs')).join('')}
+        </div>
+        <div class="flex-shrink-0 w-3 flex justify-center" style="padding-top:14px">
+          <div class="w-px h-5 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+        </div>
+        <div class="flex gap-1.5">
+          ${bits.slice(4).map((b, i) => buildBitUnit(b === 1, i + 4, '8', mode, false, 'xs')).join('')}
+        </div>
       </div>
 
       <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 flex flex-col gap-2">
@@ -380,7 +403,6 @@ function buildSection8(bits, mode) {
 
 function buildChallenge(bits, target, answered, correct, streak, mode) {
   const cfg          = MODE_CONFIG[mode];
-  const current      = bitsToDecimal(bits);
   const targetBinary = target.toString(2).padStart(4, '0');
 
   return `
@@ -407,24 +429,15 @@ function buildChallenge(bits, target, answered, correct, streak, mode) {
       </div>
 
       <!-- ビット操作エリア -->
-      <div class="flex justify-center gap-4 mb-4">
+      <div class="flex justify-center gap-4 mb-6">
         ${bits.map((b, i) => buildBitUnit(b === 1, i, 'c', mode, answered)).join('')}
-      </div>
-
-      <!-- 現在の値 -->
-      <div class="flex justify-center items-center gap-2 mb-5">
-        <span class="text-sm text-gray-400 dark:text-gray-500">現在の値：</span>
-        <span class="font-mono font-bold text-xl text-gray-700 dark:text-gray-200">${current}</span>
-        <span class="font-mono text-xs text-gray-400 dark:text-gray-500">（${bits.join('')}）</span>
       </div>
 
       <!-- 回答前：回答ボタン -->
       ${!answered ? `
-        <button
-          id="submit-challenge"
+        <button id="submit-challenge"
           class="w-full py-3 bg-violet-600 hover:bg-violet-700 active:scale-95 text-white text-sm font-bold
-                 rounded-xl shadow transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:ring-offset-2"
-        >
+                 rounded-xl shadow transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:ring-offset-2">
           回答する ✓
         </button>
       ` : ''}
@@ -450,15 +463,13 @@ function buildChallenge(bits, target, answered, correct, streak, mode) {
             </p>
           ` : ''}
         </div>
-        <button
-          id="next-challenge"
+        <button id="next-challenge"
           class="w-full py-3 active:scale-95 text-white text-sm font-bold rounded-xl shadow transition-all duration-150
                  focus:outline-none focus:ring-2 focus:ring-offset-2
                  ${correct
                    ? 'bg-violet-600 hover:bg-violet-700 focus:ring-violet-400'
                    : 'bg-gray-500 hover:bg-gray-600 focus:ring-gray-400'}
-          "
-        >
+          ">
           次の問題へ →
         </button>
       ` : ''}
@@ -523,15 +534,12 @@ export function renderBinaryPage(appEl) {
 
         <!-- メインコンテンツ -->
         <main class="max-w-2xl mx-auto px-4 py-6 flex flex-col gap-6">
-
           <p class="text-sm text-gray-500 dark:text-gray-400">
             コンピューターは <strong class="text-gray-700 dark:text-gray-200">0 と 1 だけ</strong> で
             すべての情報を表現しています。体で感じながら学んでみよう！
           </p>
 
-          <!-- モード切り替えタブ -->
           ${buildModeSwitcher(state.mode)}
-
           ${buildSection1(state.bits1, state.mode)}
           ${buildSection4(state.bits4, state.mode)}
           ${buildSection8(state.bits8, state.mode)}
@@ -543,7 +551,6 @@ export function renderBinaryPage(appEl) {
             state.challengeStreak,
             state.mode
           )}
-
         </main>
       </div>
     `;
@@ -556,16 +563,13 @@ export function renderBinaryPage(appEl) {
   }
 
   function attachEvents() {
-    // 戻る
     appEl.querySelector('#btn-back').addEventListener('click', () => navigate('/'));
 
-    // ダークモード
     appEl.querySelector('#dark-toggle').addEventListener('click', () => {
       toggleDarkMode();
       render();
     });
 
-    // モード切り替え
     appEl.querySelectorAll('[data-set-mode]').forEach(btn => {
       btn.addEventListener('click', () => {
         state.mode = btn.dataset.setMode;
@@ -573,15 +577,14 @@ export function renderBinaryPage(appEl) {
       });
     });
 
-    // ビット切り替え（全セクション共通）
     appEl.querySelectorAll('[data-bit-section]').forEach(btn => {
       btn.addEventListener('click', () => {
         const section = btn.dataset.bitSection;
         const index   = parseInt(btn.dataset.bitIndex);
         switch (section) {
-          case '1': toggleBit('bits1',  index); break;
-          case '4': toggleBit('bits4',  index); break;
-          case '8': toggleBit('bits8',  index); break;
+          case '1': toggleBit('bits1', index); break;
+          case '4': toggleBit('bits4', index); break;
+          case '8': toggleBit('bits8', index); break;
           case 'c':
             if (!state.challengeAnswered) toggleBit('challengeBits', index);
             break;
@@ -589,7 +592,6 @@ export function renderBinaryPage(appEl) {
       });
     });
 
-    // チャレンジ：回答ボタン
     appEl.querySelector('#submit-challenge')?.addEventListener('click', () => {
       const current = bitsToDecimal(state.challengeBits);
       state.challengeAnswered = true;
@@ -602,7 +604,6 @@ export function renderBinaryPage(appEl) {
       render();
     });
 
-    // チャレンジ：次の問題
     appEl.querySelector('#next-challenge')?.addEventListener('click', () => {
       state.challengeBits     = [0, 0, 0, 0];
       state.challengeTarget   = generateChallengeTarget();
