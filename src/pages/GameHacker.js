@@ -5,9 +5,60 @@ import { getDarkMode, toggleDarkMode } from '../lib/state.js';
 // 動的問題生成（ステージ・経過時間でビット数レンジを変化させる）
 // ============================================================
 
-function makeQuestionForStage(stage, elapsed) {
+function makeConversionQuestion(stage, elapsed) {
   let minBits, maxBits;
+  if (stage === 1) {
+    // Easy: 2〜4bit
+    minBits = 2;
+    maxBits = Math.min(4, 2 + Math.floor(elapsed / 20000));
+  } else if (stage === 2) {
+    // Normal: 4〜6bit
+    minBits = 4;
+    maxBits = Math.min(6, 4 + Math.floor(elapsed / 20000));
+  } else {
+    // Hard: 4〜8bit
+    minBits = 4;
+    maxBits = Math.min(8, 4 + Math.floor(elapsed / 20000));
+  }
 
+  const bits = Math.floor(Math.random() * (maxBits - minBits + 1)) + minBits;
+  const canDoHex = bits % 4 === 0;
+  const types = ['dec-to-bin', 'bin-to-dec'];
+  if (canDoHex) types.push('bin-to-hex', 'hex-to-bin');
+  const type = types[Math.floor(Math.random() * types.length)];
+
+  const val = Math.floor(Math.random() * (2 ** bits));
+  const binStr = val.toString(2).padStart(bits, '0');
+
+  switch (type) {
+    case 'dec-to-bin':
+      return { type, answerType: 'binary',
+        question: `10進数の ${val} を2進数に変換せよ`,
+        unit: '先頭の 0 は省略可', answer: binStr, bits };
+    case 'bin-to-dec':
+      return { type, answerType: 'number',
+        question: `2進数の ${binStr} を10進数に変換せよ`,
+        unit: '', answer: val, bits };
+    case 'bin-to-hex': {
+      const hexStr = val.toString(16).toUpperCase().padStart(bits / 4, '0');
+      return { type, answerType: 'hex',
+        question: `2進数の ${binStr} を16進数に変換せよ`,
+        unit: '大文字・小文字どちらも可', answer: hexStr, bits };
+    }
+    case 'hex-to-bin': {
+      const hexStr = val.toString(16).toUpperCase().padStart(bits / 4, '0');
+      return { type, answerType: 'binary',
+        question: `16進数の ${hexStr} を2進数に変換せよ`,
+        unit: '先頭の 0 は省略可', answer: binStr, bits };
+    }
+  }
+}
+
+function makeQuestionForStage(categoryId, stage, elapsed) {
+  if (categoryId === 'conversion') return makeConversionQuestion(stage, elapsed);
+
+  // 情報量計算
+  let minBits, maxBits;
   if (stage === 3) {
     // ★3: 6〜8bit スタート（20秒ごとに+1bit、上限16bit）
     minBits = 6;
@@ -125,7 +176,7 @@ const GAME_CATEGORIES = [
     id: 'conversion',
     name: '進数変換',
     description: '2進数・10進数・16進数',
-    available: false,
+    available: true,
   },
 ];
 
@@ -578,7 +629,7 @@ export function renderGameHacker(appEl) {
       score: 0,
       hackers: [],
       nextId: 0,
-      problem: makeQuestionForStage(selectedStage, 0),
+      problem: makeQuestionForStage(selectedCategory.id, selectedStage, 0),
       problemStartTime: Date.now(),
       elapsed: 0,
       gameOver: false,
@@ -630,7 +681,7 @@ export function renderGameHacker(appEl) {
             </div>
             <p id="problem-unit" class="text-base text-slate-500 mb-5"></p>
             <div class="flex gap-3">
-              <input id="answer-input" type="number" inputmode="numeric"
+              <input id="answer-input" type="text" inputmode="numeric"
                 placeholder="答えを入力…" autocomplete="off"
                 class="flex-1 px-4 py-4 rounded-2xl bg-slate-800 text-white border border-slate-600
                        text-xl focus:outline-none focus:ring-2 focus:ring-red-500 placeholder-slate-600" />
@@ -769,8 +820,22 @@ export function renderGameHacker(appEl) {
 
     function handleAnswer(raw) {
       if (gs.gameOver || !raw.trim()) return;
-      const userNum = Number(raw.trim());
-      const correct = userNum === gs.problem.answer;
+      const trimmed = raw.trim();
+      let correct;
+      switch (gs.problem.answerType) {
+        case 'number':
+          correct = Number(trimmed.replace(/,/g, '')) === gs.problem.answer;
+          break;
+        case 'binary':
+          correct = trimmed.replace(/^0+/, '') === String(gs.problem.answer).replace(/^0+/, '')
+                 || trimmed === String(gs.problem.answer);
+          break;
+        case 'hex':
+          correct = trimmed.toUpperCase() === String(gs.problem.answer).toUpperCase();
+          break;
+        default:
+          correct = trimmed === String(gs.problem.answer);
+      }
 
       if (correct) {
         const front = gs.hackers.length > 0
@@ -785,7 +850,7 @@ export function renderGameHacker(appEl) {
           gs.hackers = gs.hackers.filter(h => h.id !== front.id);
         }
         gs.score += pts;
-        gs.problem = makeQuestionForStage(selectedStage, gs.elapsed);
+        gs.problem = makeQuestionForStage(selectedCategory.id, selectedStage, gs.elapsed);
         gs.problemStartTime = Date.now();
 
         triggerFlash('green');
@@ -897,8 +962,20 @@ export function renderGameHacker(appEl) {
     function updateProblem() {
       const textEl = appEl.querySelector('#problem-text');
       const unitEl = appEl.querySelector('#problem-unit');
+      const inputEl = appEl.querySelector('#answer-input');
       if (textEl) textEl.textContent = gs.problem.question;
-      if (unitEl) unitEl.textContent = `単位: ${gs.problem.unit}`;
+      if (unitEl) {
+        const u = gs.problem.unit;
+        unitEl.textContent = !u ? '' : gs.problem.answerType === 'number' ? `単位: ${u}` : u;
+      }
+      if (inputEl) {
+        inputEl.inputMode = gs.problem.answerType === 'number' ? 'numeric' : 'text';
+        inputEl.placeholder = {
+          number: '数値を入力…',
+          binary: '2進数で入力（例: 1010）',
+          hex:    '16進数で入力（例: 2F）',
+        }[gs.problem.answerType] ?? '答えを入力…';
+      }
     }
 
     function showFeedback(text, ok) {
