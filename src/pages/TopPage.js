@@ -155,10 +155,10 @@ export function renderTopPage(appEl) {
       <!-- メインコンテンツ -->
       <main class="max-w-2xl mx-auto px-4 py-6">
 
-        <!-- デジタル体験バナー -->
+        <!-- 1. デジタルの仕組み体験バナー -->
         <button
           data-navigate="/binary"
-          class="w-full text-left mb-6 rounded-2xl overflow-hidden shadow-sm hover:shadow-md
+          class="w-full text-left mb-8 rounded-2xl overflow-hidden shadow-sm hover:shadow-md
                  border border-amber-200 dark:border-amber-800
                  bg-gradient-to-br from-amber-50 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/20
                  transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
@@ -184,10 +184,46 @@ export function renderTopPage(appEl) {
           </div>
         </button>
 
-        <p class="text-sm text-gray-500 dark:text-gray-400 mb-5">学習したいカテゴリを選んでください</p>
-        <div class="flex flex-col gap-3">
+        <!-- 2. 計算トレーニング セクション -->
+        <div class="flex items-center gap-3 mb-4">
+          <h2 class="font-bold text-gray-700 dark:text-gray-200 text-sm tracking-wide">計算トレーニング</h2>
+          <div class="flex-1 h-px bg-gray-200 dark:bg-gray-700"></div>
+        </div>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">学習したいカテゴリを選んでください</p>
+        <div class="flex flex-col gap-3 mb-10">
           ${CATEGORIES.map(renderCategoryCard).join('')}
         </div>
+
+        <!-- 3. ゲームモード セクション -->
+        <div class="flex items-center gap-3 mb-4">
+          <h2 class="font-bold text-gray-700 dark:text-gray-200 text-sm tracking-wide">ゲームモード</h2>
+          <div class="flex-1 h-px bg-gray-200 dark:bg-gray-700"></div>
+        </div>
+        <button
+          data-navigate="/game/hacker"
+          class="w-full text-left rounded-2xl overflow-hidden border border-red-200 dark:border-red-800
+                 bg-gradient-to-br from-slate-900 to-red-950
+                 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200
+                 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+          aria-label="サイバー防衛ゲームへ"
+        >
+          <div class="p-5 flex items-center gap-4">
+            <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center text-2xl">
+              🛡️
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-0.5">
+                <h3 class="font-bold text-white text-base">サイバー防衛</h3>
+                <span class="text-xs bg-red-500 text-white font-bold px-2 py-0.5 rounded-full">NEW</span>
+              </div>
+              <p class="text-xs text-red-300/80">ハッカーの侵入からサーバーを守れ！★1〜★3 の難易度</p>
+            </div>
+            <div class="flex items-center gap-2 text-base mr-1">
+              <span>🦠</span><span>🎯🦠</span><span class="text-red-400">🧑‍💻</span>
+            </div>
+          </div>
+        </button>
+
       </main>
 
       ${renderResetModal()}
